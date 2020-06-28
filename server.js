@@ -1,10 +1,23 @@
-const express = require("express");
-const socket = require("socket.io");
-const http = require("http");
-const app = express();
-const server = http.createServer(app);
-const io = socket(server);
+
+
+
+/*
+const express = require("express"); done
+const socket = require("socket.io"); done
+const http = require("http"); done
+const app = express(); done
+const server = http.createServer(app); done
+const io = socket(server); done
 const cors = require("cors");
+
+*/
+
+var app = require('express')();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+const cors = require("cors");
+
+
 
 const router = require("./router");
 const PORT = process.env.PORT || 5000;
