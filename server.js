@@ -140,7 +140,20 @@ io.on("connection", function (socket) {
     console.log("data arrvied at server");
     console.log(data)
     console.log(question)
-    socket.broadcast.emit("showStatistics", (question, data.ant1));
+
+    const AllData ={
+      ques: question.ques,
+      ant1: question.antwort1,
+      ant2: question.antwort2,
+      ant3: question.antwort3,
+      ant4: question.antwort4,
+      count1: data.ant1,
+      count2:data.ant2,
+      count3:data.ant3,
+      count4:data.ant4,
+    };
+
+    socket.broadcast.emit("showStatistics", AllData );
   });
 
 
