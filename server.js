@@ -103,6 +103,9 @@ io.on("connection", function (socket) {
     data.ant3 = 0;
     data.ant4 = 0;
   });
+  socket.on("DiscussionTime", (time)=>{
+    socket.broadcast.emit("DiscussionTime", time);
+  })
 
   //Only Broadcast to Ludwig Englbrecht
   socket.on("question-answered", (value) => {
@@ -138,9 +141,7 @@ io.on("connection", function (socket) {
     socket.broadcast.emit("showStatistics", data);
   });
 
-  socket.on("DiscussionTime", (value)=>{
-    socket.broadcast.emit("DiscussionTime", value);
-  })
+
 });
 
 //This Part has to be at the bottom of the Code
