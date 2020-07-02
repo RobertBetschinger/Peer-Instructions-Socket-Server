@@ -136,10 +136,11 @@ io.on("connection", function (socket) {
     socket.broadcast.emit("question-answered", PersonData);
   });
 
-  socket.on("showStatistics", function () {
+  socket.on("showStatistics", question => {
     console.log("data arrvied at server");
     console.log(data)
-    socket.broadcast.emit("showStatistics", data);
+    console.log(question)
+    socket.broadcast.emit("showStatistics", (question, data));
   });
 
 
