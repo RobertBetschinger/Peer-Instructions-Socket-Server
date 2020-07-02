@@ -1,6 +1,3 @@
-
-
-
 /*
 const express = require("express"); done
 const socket = require("socket.io"); done
@@ -12,12 +9,10 @@ const cors = require("cors");
 
 */
 
-var app = require('express')();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var app = require("express")();
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
 const cors = require("cors");
-
-
 
 const router = require("./router");
 const PORT = process.env.PORT || 5000;
@@ -46,6 +41,17 @@ io.on("connection", function (socket) {
     socket.broadcast.emit("Person Disconnected", disconnectedName);
   });
 
+  socket.on("New User", (name) => {
+    users.push({
+      id: socket.id,
+      userName: name,
+    });
+
+    console.log(users);
+    socket.broadcast.emit("Person joined", name);
+    io.sockets.emit("Group-Changed", users);
+  });
+
   socket.on("newPhase", (message) => {
     socket.broadcast.emit("newPhase", message);
   });
@@ -64,24 +70,15 @@ io.on("connection", function (socket) {
     });
   });
 
-  socket.on("New User", (name) => {
-    users.push({
-      id: socket.id,
-      userName: name,
-    });
 
-    console.log(users);
-    socket.broadcast.emit("Person joined", name);
-    io.sockets.emit("Group-Changed", users);
-  });
 
-  socket.on("Private-Message", (data,answer) => {
-    if(data.id === socket.id){
-      console.log("Tryed to send at yourself")
-      answer(true)
-      return
+  socket.on("Private-Message", (data, answer) => {
+    if (data.id === socket.id) {
+      console.log("Tryed to send at yourself");
+      answer(true);
+      return;
     }
-    answer(false)
+    answer(false);
     let userName;
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === socket.id) {
@@ -89,18 +86,14 @@ io.on("connection", function (socket) {
       }
     }
 
-   
-
-
-
-    const privMessageObj ={
+    const privMessageObj = {
       message: data.message,
-      name: userName.userName
-    }
-    console.log(privMessageObj.message)
-    console.log(privMessageObj.name)
+      name: userName.userName,
+    };
+    console.log(privMessageObj.message);
+    console.log(privMessageObj.name);
     socket.broadcast.to(data.id).emit("private-message", privMessageObj);
-    console.log("Private Message Sucessfully")
+    console.log("Private Message Sucessfully");
   });
 
   socket.on("NewQuestion", (question) => {
@@ -144,6 +137,10 @@ io.on("connection", function (socket) {
     console.log("data arrvied at server");
     socket.broadcast.emit("showStatistics", data);
   });
+
+  socket.on("DiscussionTime", (value)=>{
+    socket.broadcast.emit("DiscussionTime", value);
+  })
 });
 
 //This Part has to be at the bottom of the Code
