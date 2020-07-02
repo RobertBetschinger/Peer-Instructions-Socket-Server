@@ -140,7 +140,7 @@ io.on("connection", function (socket) {
     console.log("data arrvied at server");
     console.log(data)
     console.log(question)
-    socket.broadcast.emit("showStatistics", (question, data));
+    socket.broadcast.emit("showStatistics", (question, data.ant1));
   });
 
 
