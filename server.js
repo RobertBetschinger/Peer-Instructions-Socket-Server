@@ -70,8 +70,6 @@ io.on("connection", function (socket) {
     });
   });
 
-
-
   socket.on("Private-Message", (data, answer) => {
     if (data.id === socket.id) {
       console.log("Tryed to send at yourself");
@@ -103,9 +101,9 @@ io.on("connection", function (socket) {
     data.ant3 = 0;
     data.ant4 = 0;
   });
-  socket.on("DiscussionTime", (time)=>{
+  socket.on("DiscussionTime", (time) => {
     socket.broadcast.emit("DiscussionTime", time);
-  })
+  });
 
   //Only Broadcast to Ludwig Englbrecht
   socket.on("question-answered", (value) => {
@@ -136,27 +134,25 @@ io.on("connection", function (socket) {
     socket.broadcast.emit("question-answered", PersonData);
   });
 
-  socket.on("showStatistics", question => {
+  socket.on("showStatistics", (question) => {
     console.log("data arrvied at server");
-    console.log(data)
-    console.log(question)
+    console.log(data);
+    console.log(question);
 
-    const AllData ={
+    const AllData = {
       ques: question.ques,
       ant1: question.antwort1,
       ant2: question.antwort2,
       ant3: question.antwort3,
       ant4: question.antwort4,
       count1: data.ant1,
-      count2:data.ant2,
-      count3:data.ant3,
-      count4:data.ant4,
+      count2: data.ant2,
+      count3: data.ant3,
+      count4: data.ant4,
     };
 
-    socket.broadcast.emit("showStatistics", AllData );
+    socket.broadcast.emit("showStatistics", AllData);
   });
-
-
 });
 
 //This Part has to be at the bottom of the Code
